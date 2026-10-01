@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ashwin Kurekar — Developer Portfolio</title>
+    <meta name="description" content="Personal developer portfolio of Ashwin Kurekar, 3rd-year B.Tech Information Technology student, software developer, and AI enthusiast based in Nagpur, India." />
+    <meta property="og:title" content="Ashwin Kurekar — Developer Portfolio" />
+    <meta property="og:description" content="Personal developer portfolio of Ashwin Kurekar, 3rd-year B.Tech Information Technology student, software developer, and AI enthusiast based in Nagpur, India." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Safe serialization guard for AI Studio iframe inspection & React Fiber circular references -->
+    <script>
+      (function() {
+        var rawStringify = JSON.stringify;
+        if (typeof rawStringify === 'function') {
+          JSON.stringify = function(value, replacer, space) {
+            var seen = new WeakSet();
+            return rawStringify(
+              value,
+              function(key, val) {
+                if (val !== null && typeof val === 'object') {
+                  if (typeof Node !== 'undefined' && val instanceof Node) {
+                    return '[' + (val.nodeName || 'DOMNode') + ']';
+                  }
+                  if (val.nodeType || val === window) {
+                    return '[' + (val.tagName || 'Element') + ']';
+                  }
+                  if (seen.has(val)) {
+                    return '[Circular]';
+                  }
+                  seen.add(val);
+                }
+                return typeof replacer === 'function' ? replacer.call(this, key, val) : val;
+              },
+              space
+            );
+          };
+        }
+
+        if (typeof window !== 'undefined' && window.console) {
+          var sanitize = function(item) {
+            if (item && typeof item === 'object') {
+              if (typeof Node !== 'undefined' && item instanceof Node) {
+                return '<' + (item.nodeName ? item.nodeName.toLowerCase() : 'element') + (item.id ? '#' + item.id : '') + '>';
+              }
+            }
+            return item;
+          };
+
+          ['log', 'warn', 'error', 'debug', 'info'].forEach(function(method) {
+            var original = window.console[method];
+            if (typeof original === 'function') {
+              window.console[method] = function() {
+                var cleanArgs = [];
+                for (var i = 0; i < arguments.length; i++) {
+                  cleanArgs.push(sanitize(arguments[i]));
+                }
+                return original.apply(window.console, cleanArgs);
+              };
+            }
+          });
+        }
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-[#08080a] text-zinc-100 antialiased selection:bg-cyan-500/20 selection:text-cyan-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
