@@ -28,15 +28,15 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', service: 'Ashwin Kurekar Portfolio API' });
 });
 
-// Direct route for original profile photo
-app.get(['/profile%20pic.jpeg', '/profile pic.jpeg', '/images/profile%20pic.jpeg', '/images/profile pic.jpeg'], async (_req, res, next) => {
+// Direct route for original profile photo from Google Drive file 18OAyrwdU89yQxOsXWYeoP1ll_TtddF5-
+app.get(['/images/profile-photo.jpg', '/profile-photo.jpg', '/profile.jpg', '/images/profile.jpg', '/profile%20pic.jpeg', '/profile pic.jpeg', '/images/profile%20pic.jpeg', '/images/profile pic.jpeg'], async (_req, res, next) => {
   const candidatePaths = [
+    path.join(__dirname, 'public', 'images', 'profile-photo.jpg'),
+    path.join(__dirname, 'public', 'profile-photo.jpg'),
     path.join(__dirname, 'public', 'profile pic.jpeg'),
     path.join(__dirname, 'public', 'images', 'profile pic.jpeg'),
     path.join(__dirname, 'public', 'profile.jpeg'),
     path.join(__dirname, 'public', 'profile.jpg'),
-    path.join(__dirname, 'profile pic.jpeg'),
-    path.join(__dirname, '.aistudio', 'artifacts', 'brain', '650cf65b-92de-4d8e-93d6-9d91086dc42b', 'profile pic.jpeg'),
   ];
 
   try {
@@ -54,40 +54,6 @@ app.get(['/profile%20pic.jpeg', '/profile pic.jpeg', '/images/profile%20pic.jpeg
   next();
 });
 
-// Endpoint to upload original profile picture directly if needed
-app.post('/api/upload-profile-pic', express.json({ limit: '20mb' }), async (req, res) => {
-  try {
-    const { base64Data, filename = 'profile pic.jpeg' } = req.body;
-    if (!base64Data) {
-      return res.status(400).json({ error: 'base64Data is required' });
-    }
-
-    const { promises: fs } = await import('node:fs');
-    const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, '');
-    const buffer = Buffer.from(cleanBase64, 'base64');
-
-    const destDirs = [
-      path.join(__dirname, 'public'),
-      path.join(__dirname, 'public', 'images'),
-      path.join(__dirname, 'dist'),
-      path.join(__dirname, 'dist', 'images'),
-    ];
-
-    for (const dir of destDirs) {
-      try {
-        await fs.mkdir(dir, { recursive: true });
-        await fs.writeFile(path.join(dir, filename), buffer);
-        await fs.writeFile(path.join(dir, 'profile.jpeg'), buffer);
-      } catch (err) {
-        console.warn('Could not write to dir:', dir, err);
-      }
-    }
-
-    return res.json({ success: true, path: `/profile%20pic.jpeg` });
-  } catch (err: any) {
-    return res.status(500).json({ error: err.message });
-  }
-});
 
 
 // API route for Ashwin AI assistant

@@ -1,3 +1,5 @@
+import { PROFILE_IMAGE_URL } from './profileImage';
+
 export const siteConfig = {
   name: 'Ashwin Kurekar',
   title: 'Ashwin Kurekar | Information Technology Student & Developer',
@@ -8,6 +10,7 @@ export const siteConfig = {
   institution: 'Tulsiramji Gaikwad-Patil College of Engineering and Technology',
   degree: 'B.Tech — Information Technology (Third Year, 2024 – Present)',
   email: 'ashwinkurekar07@gmail.com',
+  profileImageUrl: PROFILE_IMAGE_URL,
   links: {
     github: 'https://github.com/ashwinkurekar',
     linkedin: 'https://linkedin.com/in/ashwinkurekar',
