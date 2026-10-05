@@ -130,7 +130,7 @@ export const Education: React.FC = () => {
         <div className="flex flex-col items-center text-center mb-16 sm:mb-20">
           <div className="edu-header-item inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/60 text-cyan-400 text-xs font-mono font-semibold tracking-wider uppercase mb-3">
             <FaGraduationCap className="w-3.5 h-3.5" />
-            <span>Scholastic Timeline</span>
+            <span>06. Scholastic Timeline</span>
           </div>
 
           <h2 className="edu-header-item font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight uppercase">

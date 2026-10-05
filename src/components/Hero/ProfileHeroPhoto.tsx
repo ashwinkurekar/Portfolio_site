@@ -12,17 +12,15 @@ export const ProfileHeroPhoto: React.FC<ProfileHeroPhotoProps> = ({ className = 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  // Permanent image URL derived from Google Drive direct CDN with robust fallbacks
-  const [currentSrc, setCurrentSrc] = useState<string>(PROFILE_IMAGE_URL);
-  const [fallbackIndex, setFallbackIndex] = useState(0);
-  const [hasError, setHasError] = useState(false);
+  // Authoritative permanent image source from Google Drive file 18OAyrwdU89yQxOsXWYeoP1ll_TtddF5-
+  const [imageSrc, setImageSrc] = useState<string>(PROFILE_IMAGE_URL);
+  const [hasFallbackAttempted, setHasFallbackAttempted] = useState(false);
 
   const handleImageError = () => {
-    if (fallbackIndex < PROFILE_IMAGE_FALLBACKS.length) {
-      setCurrentSrc(PROFILE_IMAGE_FALLBACKS[fallbackIndex]);
-      setFallbackIndex((prev) => prev + 1);
-    } else {
-      setHasError(true);
+    // Graceful single-step local fallback to /profile-photo.jpg if /images/profile-photo.jpg path has an issue
+    if (!hasFallbackAttempted && PROFILE_IMAGE_FALLBACKS.length > 0) {
+      setHasFallbackAttempted(true);
+      setImageSrc(PROFILE_IMAGE_FALLBACKS[0]);
     }
   };
 
@@ -49,7 +47,7 @@ export const ProfileHeroPhoto: React.FC<ProfileHeroPhotoProps> = ({ className = 
   return (
     <div
       ref={containerRef}
-      className={`relative flex items-center justify-center select-none ${className}`}
+      className={`relative flex items-center justify-center select-none flex-shrink-0 ${className}`}
     >
       {/* 1. Subtle surrounding soft radial ambient glow */}
       <div
@@ -60,7 +58,7 @@ export const ProfileHeroPhoto: React.FC<ProfileHeroPhotoProps> = ({ className = 
       {/* 2. Outer technical cyan orbit ring (decorative SVG) */}
       <svg
         ref={ringRef}
-        className="absolute -inset-6 sm:-inset-8 w-[calc(100%+3rem)] sm:w-[calc(100%+4rem)] h-[calc(100%+3rem)] sm:h-[calc(100%+4rem)] pointer-events-none -z-5"
+        className="absolute -inset-6 sm:-inset-8 w-[calc(100%+3rem)] sm:w-[calc(100%+4rem)] h-[calc(100%+3rem)] sm:h-[calc(100%+4rem)] pointer-events-none z-0"
         viewBox="0 0 400 400"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -89,32 +87,28 @@ export const ProfileHeroPhoto: React.FC<ProfileHeroPhotoProps> = ({ className = 
 
       {/* 3. Static thin cyan border ring */}
       <div
-        className="absolute -inset-2.5 sm:-inset-3 rounded-full border border-cyan-500/30 pointer-events-none -z-5"
+        className="absolute -inset-2.5 sm:-inset-3 rounded-full border border-cyan-500/30 pointer-events-none z-0"
         aria-hidden="true"
       />
 
       {/* 4. Circular container for permanent profile photograph */}
       <div
-        className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[410px] xl:h-[410px] border border-cyan-500/40 shadow-[0_0_40px_rgba(6,182,212,0.22)] bg-zinc-950 overflow-hidden rounded-full"
+        className="relative z-10 w-60 h-60 min-[375px]:w-64 min-[375px]:h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[410px] xl:h-[410px] aspect-square rounded-full overflow-hidden border border-cyan-500/40 shadow-[0_0_40px_rgba(6,182,212,0.22)]"
+        style={{
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+          transform: 'translateZ(0)',
+        }}
       >
-        {!hasError ? (
-          <img
-            src={currentSrc}
-            onError={handleImageError}
-            alt="Ashwin Kurekar — Profile Photograph"
-            className="profile-image w-full h-full object-cover object-center pointer-events-none select-none rounded-full"
-            loading="eager"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-zinc-950 rounded-full">
-            <div className="w-20 h-20 rounded-full bg-cyan-950/80 border border-cyan-500/50 flex items-center justify-center text-cyan-300 font-display text-2xl font-black mb-2 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
-              AK
-            </div>
-            <p className="text-sm font-bold text-white font-display">Ashwin Kurekar</p>
-            <p className="text-xs text-cyan-400 font-mono mt-1">Information Technology</p>
-          </div>
-        )}
+        <img
+          src={imageSrc}
+          onError={handleImageError}
+          alt="Ashwin Kurekar — Profile Photograph"
+          width={410}
+          height={410}
+          className="profile-image w-full h-full object-cover object-center pointer-events-none select-none rounded-full"
+          loading="eager"
+          decoding="async"
+        />
       </div>
     </div>
   );

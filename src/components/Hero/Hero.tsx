@@ -222,7 +222,7 @@ export const Hero: React.FC = () => {
             </p>
 
             {/* Mobile-Only Profile Photo Placement (between Description and Buttons) */}
-            <div className="block lg:hidden my-8 hero-photo-wrapper flex justify-center">
+            <div className="flex lg:hidden my-8 hero-photo-wrapper justify-center items-center w-full">
               <ProfileHeroPhoto />
             </div>
 

@@ -130,7 +130,7 @@ export const Achievements: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
           <div>
             <span className="achieve-header-item text-xs uppercase font-mono tracking-widest text-cyan-400 font-semibold mb-2 block">
-              06. Recognitions & Honors
+              05. Recognitions & Honors
             </span>
             <h2 className="achieve-header-item font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight uppercase">
               Achievements & Awards
